@@ -6,6 +6,7 @@ function game() {
 	that.scene = new THREE.Scene();
 	that.render = false;
 	
+	var texture = {}
 	var eventlisteners = {}
 	
 	that.addEventListener = function(event, func) {
@@ -18,6 +19,11 @@ function game() {
 		eventlisteners[event].forEach(function(itm) {
 			itm();
 		});
+	}
+	
+	that.texture = function(name) {
+		texture[name] = texture[name] || THREE.ImageUtils.loadTexture(name);
+		return texture[name];
 	}
 	
 	function psudo_callevent_function(event) {

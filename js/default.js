@@ -17,7 +17,7 @@
     
     require(deps,function() {
     	var g = new game();
-        var camera, scene, renderer;
+        var camera, scene;
         var geometry, material, mesh, rotationSpeed;
         var gui = new dat.GUI();
         var fps = {show: true}, stats;
@@ -35,22 +35,30 @@
         (function () {
             with(THREE) {
                 // Initializing canvas, camera and the scene
-				renderer = g.renderer;
-                renderer.setSize( window.innerWidth, window.innerHeight );
+                g.renderer.setSize( window.innerWidth, window.innerHeight );
                 
-                with(renderer.domElement.style)
+                with(g.renderer.domElement.style)
                 {
                     position = 'fixed';
                     zIndex = "-100";
                 }
                 
-                document.body.appendChild( renderer.domElement );
+                document.body.appendChild( g.renderer.domElement );
 
 				camera = g.camera;
                 camera.position = position;
 
                 scene = g.scene;
 
+                // Adding a stone graphic
+                var stonemosaic, stonemesh;
+                stonemosaic = g.texture("img/stonemosaic.jpg");
+
+	                stonemesh = new Mesh( new PlaneGeometry(500, 500, 1, 1),
+                                      new MeshBasicMaterial( { map: stonemosaic, wireframe: false } ));
+                stonemesh.position.x = -500;
+                scene.add(stonemesh);
+                
                 // Adding the rotating cube
                 geometry = new CubeGeometry( 200, 200, 200 );
                 material = new MeshBasicMaterial( { color: 0xFF0000, wireframe: true, wireframeLinewidth: 5 } );
@@ -60,14 +68,6 @@
                 
                 rotationSpeed = {x: 0.005, y: 0.0001};
                 
-                // Adding a stone graphic
-                var stonemosaic, stonemesh;
-                stonemosaic = ImageUtils.loadTexture("img/stonemosaic.jpg");
-
-	                stonemesh = new Mesh( new PlaneGeometry(500, 500, 500, 500),
-                                      new MeshBasicMaterial( { map: stonemosaic, wireframe: false } ));
-                stonemesh.position.x = -500;
-                scene.add(stonemesh);
                 
                 // Adding stats / fps
                 
@@ -101,11 +101,8 @@
                     stats.domElement.style.display='none';
                 }
 
-                //renderer.render( scene, camera );
-                //requestAnimationFrame( animate );
         }
         
-        //animate();
         g.addEventListener("render", animate);
         g.start();
     });
