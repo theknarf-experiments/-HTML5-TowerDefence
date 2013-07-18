@@ -1,13 +1,22 @@
 (function() {
     
+    var js_folder = "js/";
+    var lib_folder = js_folder + "lib/";
+    var helper_folder = js_folder + "helper/";
+    
     var deps = [
-        "js/three.min.js",
-        "js/dat.gui.min.js",
-        "js/stats.min.js",
-        "js/jquery-1.8.2.min.js"
+    	// Library dependencies
+        	lib_folder + "three.min.js"
+        ,	lib_folder + "dat.gui.min.js"
+        ,	lib_folder + "stats.min.js"
+        ,	lib_folder + "jquery-1.8.2.min.js"
+        
+        // Helper dependencies
+        ,	helper_folder + "game.js"
     ];
     
     require(deps,function() {
+    	var g = new game();
         var camera, scene, renderer;
         var geometry, material, mesh, rotationSpeed;
         var gui = new dat.GUI();
@@ -26,7 +35,7 @@
         (function () {
             with(THREE) {
                 // Initializing canvas, camera and the scene
-                renderer = new WebGLRenderer();
+				renderer = g.renderer;
                 renderer.setSize( window.innerWidth, window.innerHeight );
                 
                 with(renderer.domElement.style)
@@ -37,17 +46,10 @@
                 
                 document.body.appendChild( renderer.domElement );
 
-                var ratio = window.innerWidth / window.innerHeight;
-                camera = new PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
-                /*
-                camera = new OrthographicCamera(-1000 * ratio,
-                                                1000 * ratio,
-                                                1000,
-                                                -1000,
-                                                0, 1000);/**/
+				camera = g.camera;
                 camera.position = position;
 
-                scene = new Scene();
+                scene = g.scene;
 
                 // Adding the rotating cube
                 geometry = new CubeGeometry( 200, 200, 200 );
@@ -62,7 +64,7 @@
                 var stonemosaic, stonemesh;
                 stonemosaic = ImageUtils.loadTexture("img/stonemosaic.jpg");
 
-                stonemesh = new Mesh( new PlaneGeometry(500, 500, 500, 500),
+	                stonemesh = new Mesh( new PlaneGeometry(500, 500, 500, 500),
                                       new MeshBasicMaterial( { map: stonemosaic, wireframe: false } ));
                 stonemesh.position.x = -500;
                 scene.add(stonemesh);
@@ -99,11 +101,13 @@
                     stats.domElement.style.display='none';
                 }
 
-                renderer.render( scene, camera );
-                requestAnimationFrame( animate );
+                //renderer.render( scene, camera );
+                //requestAnimationFrame( animate );
         }
         
-        animate();
+        //animate();
+        g.addEventListener("render", animate);
+        g.start();
     });
     
     
