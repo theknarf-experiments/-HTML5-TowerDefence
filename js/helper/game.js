@@ -1,6 +1,6 @@
 function game() {
 	
-	that = {}
+	var that = {}
 	that.renderer = new THREE.WebGLRenderer();
 	that.camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
 	that.scene = new THREE.Scene();
