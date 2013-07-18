@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test game</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        
+        <!-- Stylesheets -->
+        <style>
+            html, body { margin: 0; padding: 0; }
+        </style>
+        
+        <!-- Javascript -->
+        <script src="js/require.js"></script>
+        <script>
+            require.config({
+                urlArgs: "bust=" + (new Date()).getTime()
+            });
+            require(["js/default"]);
+        </script>
+    </head>
+    <body>
+        
+    </body>
+</html>
