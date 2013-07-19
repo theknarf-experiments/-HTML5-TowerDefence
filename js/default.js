@@ -20,7 +20,6 @@
     	var g = new game();
     	var hKeys = new keys();
     	
-        var geometry, material, mesh, rotationSpeed;
         var gui = new dat.GUI();
         var fps = {show: true}, stats;
         var position = {x: 0, y: 0, z: 500};
@@ -41,15 +40,10 @@
                 g.camera.position = position;
 
                 // Adding a stone graphic
-                var stonemosaic, stonemesh;
-                stonemosaic = g.texture("img/stonemosaic.jpg");
-                stonemesh = new Mesh( new PlaneGeometry(500, 500, 1, 1),
-                                  new MeshBasicMaterial( { map: stonemosaic, wireframe: false } ));
+                var stonemesh = new Mesh( new PlaneGeometry(64*3, 64*4, 1, 1),
+                                  new MeshBasicMaterial( {map: g.texture("img/hyptosis_tile-art-batch-1.png"), height: 64} ));
                 stonemesh.position.x = -500;
                 g.scene.add(stonemesh);
-                
-                rotationSpeed = {x: 0.005, y: 0.0001};
-                
                 
                 // Adding stats / fps
                 stats = new Stats();
@@ -59,9 +53,7 @@
                 document.documentElement.appendChild( stats.domElement );
                 
                 // adding gui
-                gui.add(g.camera.position, 'z', 300, 500);
-                gui.add(rotationSpeed, 'x');
-                gui.add(rotationSpeed, 'y');
+                gui.add(g.camera.position, 'z', 100, 600);
                 gui.add(fps, 'show');
             }
         })();
@@ -82,8 +74,14 @@
 				if(hKeys.keycode(37)) { // left
 	                position.x+=10;
 	            }
+	            if(hKeys.keycode(38)) { // Up
+		            position.y-=10;
+	            }
 	            if(hKeys.keycode(39)) { // right
 	                position.x-=10;
+	            }
+	            if(hKeys.keycode(40)) { // Down
+		            position.y+=10;
 	            }
         }
         
